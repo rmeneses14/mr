@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiniela Mundial 2026 · Marce vs Roberto</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --gold: #F5C842;
+    --marce: #E91E63;
+    --roberto: #2563EB;
+    --bg: #070B14;
+    --bg2: #0D1220;
+    --surface: #111827;
+    --surface2: #161E30;
+    --border: rgba(245,200,66,0.15);
+    --text: #F0F4FF;
+    --muted: #8896B0;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+  /* HERO */
+  .hero {
+    position:relative; height:100vh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; overflow:hidden;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(26,58,110,0.8) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 35% at 50% -5%, rgba(245,200,66,0.12) 0%, transparent 60%),
+                linear-gradient(180deg, #020408 0%, #070B14 50%, #0D1528 100%);
+    will-change: transform;
+  }
+  .hero-grid {
+    position:absolute; inset:0;
+    background-image: linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
+    background-size: 52px 52px;
+    will-change: transform;
+  }
+  .hero-content { position:relative; z-index:2; padding:0 24px; }
+  .hero-eyebrow {
+    font-family:'JetBrains Mono',monospace; font-size:0.68rem;
+    letter-spacing:0.3em; color:var(--gold); text-transform:uppercase;
+    margin-bottom:18px; opacity:0; animation:fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(4.5rem,15vw,11rem); line-height:0.88;
+    background:linear-gradient(135deg,#fff 25%,var(--gold) 75%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    opacity:0; animation:fadeUp 0.7s 0.35s forwards;
+  }
+  .hero-sub {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(1.1rem,3.5vw,2rem);
+    color:var(--gold); letter-spacing:0.18em; margin-top:10px;
+    opacity:0; animation:fadeUp 0.7s 0.5s forwards;
+  }
+  .hero-vs {
+    display:flex; align-items:center; justify-content:center; gap:20px; margin-top:32px;
+    opacity:0; animation:fadeUp 0.7s 0.65s forwards;
+  }
+  .hero-player { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,6vw,3.6rem); letter-spacing:0.06em; }
+  .hero-player.marce { color:var(--marce); }
+  .hero-player.roberto { color:var(--roberto); }
+  .hero-vs-sep { font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--muted); }
+  .hero-scroll {
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    opacity:0; animation:fadeIn 1s 1.3s forwards; cursor:pointer;
+    text-decoration:none; color:var(--muted);
+  }
+  .hero-scroll span { font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; }
+  .scroll-arrow { width:18px; height:18px; border-right:2px solid var(--gold); border-bottom:2px solid var(--gold); transform:rotate(45deg); animation:bounce 1.3s infinite; }
+
+  /* STICKY BAR */
+  .sticky-bar {
+    position:sticky; top:0; z-index:100;
+    background:rgba(7,11,20,0.95); backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border); padding:10px 16px;
+  }
+  .sticky-inner {
+    max-width:800px; margin:0 auto;
+    display:flex; align-items:center; justify-content:center;
+    gap:clamp(10px,3vw,40px);
+  }
+  .sb-player { display:flex; flex-direction:column; align-items:center; gap:1px; }
+  .sb-name { font-family:'JetBrains Mono',monospace; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; }
+  .sb-name.marce { color:var(--marce); }
+  .sb-name.roberto { color:var(--roberto); }
+  .sb-pts { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,5.5vw,3rem); line-height:1; }
+  .sb-pts.marce { color:var(--marce); }
+  .sb-pts.roberto { color:var(--roberto); }
+  .sb-mid { display:flex; flex-direction:column; align-items:center; gap:1px; }
+  .sb-vs { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:var(--gold); }
+  .sb-info { font-family:'JetBrains Mono',monospace; font-size:0.48rem; color:var(--muted); letter-spacing:0.15em; text-align:center; }
+  .live-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e; animation:pulse 1.2s infinite; margin-right:4px; }
+  .live-dot.off { background:var(--muted); animation:none; }
+
+  /* MAIN */
+  .main { max-width:1100px; margin:0 auto; padding:64px 16px 80px; }
+
+  .sec-label { font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
+  .sec-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,5vw,3.2rem); letter-spacing:0.04em; line-height:1; margin-bottom:40px; }
+
+  /* LEADER */
+  .leader-card {
+    background:linear-gradient(135deg,rgba(245,200,66,0.08),rgba(245,200,66,0.02));
+    border:1px solid rgba(245,200,66,0.28); border-radius:14px;
+    padding:20px 24px; display:flex; align-items:center;
+    justify-content:space-between; margin-bottom:40px; flex-wrap:wrap; gap:12px;
+  }
+  .leader-left { display:flex; flex-direction:column; gap:2px; }
+  .leader-label { font-size:0.68rem; color:var(--muted); letter-spacing:0.1em; }
+  .leader-name { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; letter-spacing:0.05em; }
+  .leader-name.marce { color:var(--marce); }
+  .leader-name.roberto { color:var(--roberto); }
+  .leader-name.tie { color:var(--gold); }
+  .leader-diff { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--gold); }
+
+  /* STATS */
+  .stats-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:12px; margin-bottom:48px;
+  }
+  .stat-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:20px 16px; text-align:center; }
+  .stat-val { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; line-height:1; }
+  .stat-val.marce { color:var(--marce); }
+  .stat-val.roberto { color:var(--roberto); }
+  .stat-lbl { font-size:0.65rem; color:var(--muted); margin-top:3px; letter-spacing:0.08em; }
+
+  /* DIVIDER */
+  .divider { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:0.2; margin:48px 0; }
+
+  /* LEGEND */
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:28px; padding:14px 16px; background:var(--surface2); border-radius:10px; border:1px solid var(--border); }
+  .leg-item { display:flex; align-items:center; gap:7px; font-size:0.7rem; color:var(--muted); }
+  .badge-exact { background:var(--gold); color:#000; font-family:'JetBrains Mono',monospace; font-size:0.48rem; padding:2px 5px; border-radius:3px; font-weight:700; letter-spacing:0.08em; }
+  .badge-win { background:rgba(245,200,66,0.12); color:var(--gold); border:1px solid rgba(245,200,66,0.35); font-family:'JetBrains Mono',monospace; font-size:0.48rem; padding:2px 5px; border-radius:3px; letter-spacing:0.08em; }
+
+  /* GRID */
+  .matches-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media(max-width:600px){ .matches-grid { grid-template-columns:1fr; } }
+
+  /* MATCH CARD */
+  .match-card {
+    background:var(--surface2); border:1px solid var(--border); border-radius:12px;
+    padding:15px; position:relative; overflow:hidden;
+    opacity:0; transform:translateY(16px);
+    transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .match-card.visible { opacity:1; transform:translateY(0); transition:opacity 0.45s ease, transform 0.45s ease, border-color 0.2s; }
+  .match-card:hover { border-color:rgba(245,200,66,0.3); box-shadow:0 4px 24px rgba(0,0,0,0.4); }
+  .match-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); opacity:0.4; }
+
+  .mc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .mc-num { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:var(--muted); letter-spacing:0.18em; }
+  .mc-status { font-family:'JetBrains Mono',monospace; font-size:0.5rem; letter-spacing:0.12em; padding:2px 7px; border-radius:10px; }
+  .mc-status.live { background:rgba(34,197,94,0.15); color:#22c55e; border:1px solid rgba(34,197,94,0.3); }
+  .mc-status.final { background:rgba(245,200,66,0.1); color:var(--gold); border:1px solid rgba(245,200,66,0.2); }
+  .mc-status.soon { background:rgba(136,150,176,0.1); color:var(--muted); border:1px solid rgba(136,150,176,0.2); }
+
+  .mc-teams { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .mc-team { display:flex; align-items:center; gap:6px; flex:1; }
+  .mc-team.away { flex-direction:row-reverse; text-align:right; }
+  .mc-flag { font-size:1.25rem; }
+  .mc-tname { font-weight:600; font-size:0.82rem; }
+  .mc-sep { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--muted); flex-shrink:0; }
+
+  /* RESULT */
+  .mc-result {
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background:rgba(245,200,66,0.07); border-radius:7px; padding:5px 10px; margin-bottom:10px;
+  }
+  .mc-result-lbl { font-family:'JetBrains Mono',monospace; font-size:0.5rem; color:var(--muted); letter-spacing:0.15em; }
+  .mc-result-score { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; color:var(--gold); letter-spacing:0.05em; }
+  .mc-result.live-result { background:rgba(34,197,94,0.08); }
+  .mc-result.live-result .mc-result-score { color:#22c55e; }
+  .mc-result.pending-result { background:rgba(136,150,176,0.06); }
+  .mc-result.pending-result .mc-result-score { color:var(--muted); font-size:0.85rem; }
+
+  /* PREDICTIONS */
+  .mc-preds { display:grid; grid-template-columns:1fr 1fr; gap:8px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px; }
+  .pred { border-radius:8px; padding:8px 10px; display:flex; flex-direction:column; gap:2px; }
+  .pred.m { background:rgba(233,30,99,0.08); border:1px solid rgba(233,30,99,0.2); }
+  .pred.r { background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.2); }
+  .pred-who { font-family:'JetBrains Mono',monospace; font-size:0.5rem; letter-spacing:0.15em; text-transform:uppercase; }
+  .pred-who.m { color:var(--marce); }
+  .pred-who.r { color:var(--roberto); }
+  .pred-scr { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; line-height:1.1; }
+  .pred-info { display:flex; align-items:center; gap:4px; font-size:0.55rem; color:var(--muted); margin-top:1px; }
+  .pts-num { color:var(--gold); font-weight:700; }
+
+  /* LOADING */
+  .loading-overlay { display:flex; align-items:center; justify-content:center; gap:10px; padding:20px; color:var(--muted); font-size:0.75rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.15em; }
+  .spinner { width:14px; height:14px; border:2px solid rgba(245,200,66,0.2); border-top-color:var(--gold); border-radius:50%; animation:spin 0.7s linear infinite; }
+
+  /* ERROR */
+  .api-error { text-align:center; padding:20px; }
+  .api-error p { font-size:0.75rem; color:var(--muted); margin-bottom:8px; }
+  .api-error button { background:rgba(245,200,66,0.12); border:1px solid rgba(245,200,66,0.3); color:var(--gold); padding:8px 18px; border-radius:8px; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; }
+
+  /* LAST UPDATE */
+  .last-update { text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:var(--muted); letter-spacing:0.12em; margin-top:32px; }
+
+  footer { border-top:1px solid var(--border); padding:28px 16px; text-align:center; color:var(--muted); font-size:0.65rem; letter-spacing:0.1em; }
+
+  /* KEYFRAMES */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @keyframes spin { to{transform:rotate(360deg)} }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-bg" id="bgLayer"></div>
+  <div class="hero-grid" id="gridLayer"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">⚽ FIFA World Cup 2026 · Quiniela Personal</p>
+    <h1 class="hero-title">MUNDIAL<br>2026</h1>
+    <p class="hero-sub">Road to the Final · New York New Jersey</p>
+    <div class="hero-vs">
+      <span class="hero-player marce">Marce</span>
+      <span class="hero-vs-sep">— VS —</span>
+      <span class="hero-player roberto">Roberto</span>
+    </div>
+  </div>
+  <a class="hero-scroll" href="#scoreboard"><span>Ver marcador</span><div class="scroll-arrow"></div></a>
+</section>
+
+<div class="sticky-bar" id="scoreboard">
+  <div class="sticky-inner">
+    <div class="sb-player">
+      <span class="sb-name marce">Marce</span>
+      <span class="sb-pts marce" id="pts-marce">–</span>
+    </div>
+    <div class="sb-mid">
+      <span class="sb-vs">VS</span>
+      <span class="sb-info"><span class="live-dot off" id="live-dot"></span><span id="api-status">Cargando…</span></span>
+    </div>
+    <div class="sb-player">
+      <span class="sb-name roberto">Roberto</span>
+      <span class="sb-pts roberto" id="pts-roberto">–</span>
+    </div>
+  </div>
+</div>
+
+<main class="main" id="main">
+  <div class="loading-overlay" id="loading"><div class="spinner"></div>Consultando resultados del Mundial…</div>
+</main>
+
+<footer>
+  <p>⚽ Quiniela Marce vs Roberto · FIFA World Cup 2026 · Resultados en tiempo real vía ESPN</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  QUINIELA DATA — predicciones de Marce y Roberto
+// ═══════════════════════════════════════════════
+const FLAGS = {
+  'Germany':'🇩🇪','Paraguay':'🇵🇾','France':'🇫🇷','Sweden':'🇸🇪',
+  'South Africa':'🇿🇦','Canada':'🇨🇦','Netherlands':'🇳🇱','Morocco':'🇲🇦',
+  'Portugal':'🇵🇹','Croatia':'🇭🇷','Spain':'🇪🇸','USA':'🇺🇸',
+  'Bosnia and Herzegovina':'🇧🇦','Bosnia-Herzegovina':'🇧🇦','Bosnia & Herzegovina':'🇧🇦',
+  'Belgium':'🇧🇪','Senegal':'🇸🇳','Austria':'🇦🇹','Algeria':'🇩🇿',
+  'Brazil':'🇧🇷','Japan':'🇯🇵','Ivory Coast':'🇨🇮','Côte d\'Ivoire':'🇨🇮','Cote d\'Ivoire':'🇨🇮',
+  'Norway':'🇳🇴','Mexico':'🇲🇽','Ecuador':'🇪🇨','England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+  'DR Congo':'🇨🇩','Congo DR':'🇨🇩','DR. Congo':'🇨🇩',
+  'Argentina':'🇦🇷','Cape Verde':'🇨🇻','Australia':'🇦🇺','Egypt':'🇪🇬',
+  'Switzerland':'🇨🇭','Colombia':'🇨🇴','Ghana':'🇬🇭',
+};
+function flag(n){ return FLAGS[n] || '🏳️'; }
+
+// PREDICTIONS: marce/roberto scores as [home, away, suffix?]
+// 'G' suffix = golden goal / ganó en penales
+// Datos verificados contra tabla imagen del 27 jun 2026
+const QUINIELA = [
+  // P1  South Africa vs Canada
+  { key:'RSA_CAN', home:'South Africa', away:'Canada',
+    marce:[0,2], roberto:[1,2] },
+
+  // P2  Netherlands vs Morocco  — Marce: 1(G)-1 (penales), Roberto: 2-1
+  { key:'NED_MAR', home:'Netherlands', away:'Morocco',
+    marce:[1,1,'G'], roberto:[2,1] },
+
+  // P3  Germany vs Paraguay
+  { key:'GER_PAR', home:'Germany', away:'Paraguay',
+    marce:[3,0], roberto:[3,0] },
+
+  // P4  France vs Sweden
+  { key:'FRA_SWE', home:'France', away:'Sweden',
+    marce:[3,1], roberto:[3,0] },
+
+  // P5  Belgium vs Senegal
+  { key:'BEL_SEN', home:'Belgium', away:'Senegal',
+    marce:[2,1], roberto:[1,0] },
+
+  // P6  USA vs Bosnia and Herzegovina
+  { key:'USA_BIH', home:'USA', away:'Bosnia and Herzegovina',
+    marce:[2,1], roberto:[3,0] },
+
+  // P7  Spain vs Austria
+  { key:'ESP_AUT', home:'Spain', away:'Austria',
+    marce:[2,0], roberto:[2,0] },
+
+  // P8  Croatia vs Portugal  — Marce: 1-1(G) Portugal pens, Roberto: 1-2
+  { key:'CRO_POR', home:'Croatia', away:'Portugal',
+    marce:[1,1,'G'], roberto:[1,2] },
+
+  // P9  Brazil vs Japan  — Marce: 1-1(G) pens, Roberto: 2-2(G) Japón gana pens
+  { key:'BRA_JPN', home:'Brazil', away:'Japan',
+    marce:[1,1,'G'], roberto:[2,2,'G','away'] },
+
+  // P10 Ivory Coast vs Norway
+  { key:'CIV_NOR', home:'Ivory Coast', away:'Norway',
+    marce:[1,2], roberto:[0,2] },
+
+  // P11 Mexico vs Ecuador  — Marce: 1(G)-1 pens
+  { key:'MEX_ECU', home:'Mexico', away:'Ecuador',
+    marce:[1,1,'G'], roberto:[2,1] },
+
+  // P12 England vs DR Congo
+  { key:'ENG_COD', home:'England', away:'DR Congo',
+    marce:[2,0], roberto:[2,1] },
+
+  // P13 Switzerland vs Algeria
+  { key:'SUI_ALG', home:'Switzerland', away:'Algeria',
+    marce:[2,0], roberto:[1,0] },
+
+  // P14 Ghana vs Colombia  — Marce: 1-1(G) pens, Roberto: 0-2
+  { key:'GHA_COL', home:'Ghana', away:'Colombia',
+    marce:[1,1,'G'], roberto:[0,2] },
+
+  // P15 Australia vs Egypt
+  { key:'AUS_EGY', home:'Australia', away:'Egypt',
+    marce:[1,2], roberto:[1,0] },
+
+  // P16 Argentina vs Cape Verde
+  { key:'ARG_CPV', home:'Argentina', away:'Cape Verde',
+    marce:[3,0], roberto:[3,0] },
+];
+
+// ═══════════════════════════════════════════════
+//  SCORING
+// ═══════════════════════════════════════════════
+function calcPoints(pred, actualH, actualA, actualPenWinner) {
+  if (!pred || actualH === null || actualA === null) return { pts:0, badge:null };
+  const [ph, pa, pSuffix, penSide] = pred;
+  const phN = parseInt(ph), paN = parseInt(pa);
+  const ah = actualH, aa = actualA;
+
+  // Actual winner
+  let actualW;
+  if (ah > aa) actualW = 'H';
+  else if (aa > ah) actualW = 'A';
+  else if (actualPenWinner) actualW = actualPenWinner === 'home' ? 'H' : 'A';
+  else actualW = 'D';
+
+  // Predicted winner
+  let predW;
+  if (phN > paN) predW = 'H';
+  else if (paN > phN) predW = 'A';
+  else if (pSuffix === 'G') {
+    // explicit side
+    if (penSide === 'home') predW = 'H';
+    else if (penSide === 'away') predW = 'A';
+    else predW = 'PEN'; // unknown side, just predicted pens
+  }
+  else predW = 'D';
+
+  // Exact score check
+  const numericExact = phN === ah && paN === aa;
+  if (numericExact && pSuffix === 'G' && (actualPenWinner || actualW !== 'D')) {
+    // Predicted a draw going to pens AND actual also went to pens
+    if (actualPenWinner) return { pts:3, badge:'exact' };
+  }
+  if (numericExact && !pSuffix && !actualPenWinner) {
+    return { pts:3, badge:'exact' };
+  }
+  // Non-pens exact
+  if (numericExact && phN !== paN) return { pts:3, badge:'exact' };
+
+  // Winner check
+  if (actualW === predW) return { pts:1, badge:'win' };
+  if (predW === 'PEN' && actualPenWinner) {
+    // pred said pens but didn't specify side — give winner point
+    return { pts:1, badge:'win' };
+  }
+  return { pts:0, badge:null };
+}
+
+function formatPred(pred, winnerName) {
+  if (!pred) return winnerName ? winnerName : '?';
+  const [h, a, suffix, penSide] = pred;
+  if (suffix === 'G') {
+    const ph = parseInt(h), pa = parseInt(a);
+    // explicit side wins pens
+    if (penSide === 'away') return `${h} – ${a}(G)`;
+    if (penSide === 'home') return `${h}(G) – ${a}`;
+    // infer from scores
+    if (ph > pa) return `${h}(G) – ${a}`;
+    if (pa > ph) return `${h} – ${a}(G)`;
+    return `${h}(G) – ${a}`; // tie scores, default home
+  }
+  return `${h} – ${a}`;
+}
+
+// ═══════════════════════════════════════════════
+//  ESPN API
+// ═══════════════════════════════════════════════
+const ESPN_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?limit=200';
+let liveData = {}; // key → { homeScore, awayScore, status, minute }
+let lastFetch = null;
+let fetchInterval = null;
+let hasLive = false;
+
+async function fetchESPN() {
+  try {
+    const r = await fetch(ESPN_URL);
+    if (!r.ok) throw new Error('ESPN returned ' + r.status);
+    const data = await r.json();
+    const events = data.events || [];
+
+    // Build lookup by team name pair
+    liveData = {};
+    events.forEach(ev => {
+      const comp = ev.competitions?.[0];
+      if (!comp) return;
+      const teams = comp.competitors || [];
+      const home = teams.find(t => t.homeAway === 'home') || teams[0];
+      const away = teams.find(t => t.homeAway === 'away') || teams[1];
+      if (!home || !away) return;
+
+      const hn = home.team?.displayName || home.team?.name || '';
+      const an = away.team?.displayName || away.team?.name || '';
+      const status = comp.status?.type?.name || 'pre';
+      const period = comp.status?.displayClock || '';
+      const completed = comp.status?.type?.completed || false;
+
+      // Try to detect penalty shootout winner from notes or situation
+      let penWinner = null;
+      const notes = comp.notes || [];
+      const situation = comp.situation || {};
+      // ESPN sometimes puts "Won on Penalties" in status detail
+      const detail = comp.status?.type?.description || '';
+      if (detail.toLowerCase().includes('penalt')) {
+        // Check which team won — winner has wonOnPenalties flag or higher score
+        const homeWon = home.winner === true;
+        const awayWon = away.winner === true;
+        if (homeWon) penWinner = 'home';
+        else if (awayWon) penWinner = 'away';
+      }
+      // Also check winner flags regardless
+      if (!penWinner && completed) {
+        if (home.winner === true && parseInt(home.score||0) === parseInt(away.score||0)) penWinner = 'home';
+        if (away.winner === true && parseInt(home.score||0) === parseInt(away.score||0)) penWinner = 'away';
+      }
+
+      const entry = {
+        homeScore: completed || status === 'STATUS_IN_PROGRESS' ? parseInt(home.score || 0) : null,
+        awayScore: completed || status === 'STATUS_IN_PROGRESS' ? parseInt(away.score || 0) : null,
+        status, completed,
+        live: status === 'STATUS_IN_PROGRESS',
+        clock: period,
+        homeName: hn, awayName: an,
+        date: comp.date,
+        penWinner,
+      };
+
+      liveData[hn + '|' + an] = entry;
+      liveData[an + '|' + hn] = { ...entry,
+        homeScore: entry.awayScore, awayScore: entry.homeScore,
+        homeName: an, awayName: hn,
+        penWinner: penWinner === 'home' ? 'away' : penWinner === 'away' ? 'home' : null,
+      };
+    });
+
+    hasLive = events.some(ev => ev.competitions?.[0]?.status?.type?.name === 'STATUS_IN_PROGRESS');
+    lastFetch = new Date();
+    return true;
+  } catch(e) {
+    console.warn('ESPN fetch failed:', e.message);
+    return false;
+  }
+}
+
+// Fuzzy match team names
+function findMatch(homeTarget, awayTarget) {
+  const normalize = s => s.toLowerCase().replace(/[^a-z]/g,'');
+  const hn = normalize(homeTarget);
+  const an = awayTarget ? normalize(awayTarget) : null;
+
+  for (const key of Object.keys(liveData)) {
+    const entry = liveData[key];
+    const eh = normalize(entry.homeName);
+    const ea = normalize(entry.awayName);
+    if (eh.includes(hn.slice(0,5)) || hn.includes(eh.slice(0,5))) {
+      if (!an || ea.includes(an.slice(0,4)) || an.includes(ea.slice(0,4))) {
+        return entry;
+      }
+    }
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════
+function badgeHtml(b) {
+  if (b === 'exact') return `<span class="badge-exact">EXACTO</span>`;
+  if (b === 'win')   return `<span class="badge-win">GANADOR</span>`;
+  return '';
+}
+
+function renderCard(q, idx) {
+  const match = findMatch(q.home, q.away);
+  const hasResult = match && match.homeScore !== null;
+  const isLive = match && match.live;
+  const isPending = !match || (!hasResult && !match.completed);
+
+  const aH = hasResult ? match.homeScore : null;
+  const aA = hasResult ? match.awayScore : null;
+  const penW = match?.penWinner || null;
+
+  const mScore = calcPoints(q.marce,    aH, aA, penW);
+  const rScore = calcPoints(q.roberto,  aH, aA, penW);
+
+  // Status label
+  let statusHtml = '';
+  if (isLive) {
+    statusHtml = `<span class="mc-status live">🔴 ${match.clock || 'VIVO'}</span>`;
+  } else if (hasResult) {
+    statusHtml = `<span class="mc-status final">FINAL</span>`;
+  } else {
+    const dateStr = match?.date ? new Date(match.date).toLocaleDateString('es',{month:'short',day:'numeric'}) : 'Por jugar';
+    statusHtml = `<span class="mc-status soon">${dateStr}</span>`;
+  }
+
+  // Result row
+  let resultHtml = '';
+  const penLabel = match?.penWinner ? ' <span style="font-size:0.5rem;color:var(--muted);letter-spacing:0.1em">(PENALES)</span>' : '';
+  if (isLive) {
+    resultHtml = `<div class="mc-result live-result"><span class="mc-result-lbl">EN VIVO</span><span class="mc-result-score">${aH} – ${aA}</span></div>`;
+  } else if (hasResult) {
+    resultHtml = `<div class="mc-result"><span class="mc-result-lbl">RESULTADO</span><span class="mc-result-score">${aH} – ${aA}${penLabel}</span></div>`;
+  } else {
+    resultHtml = `<div class="mc-result pending-result"><span class="mc-result-lbl">RESULTADO</span><span class="mc-result-score">– – –</span></div>`;
+  }
+
+  const awayDisplay = q.away || (match?.awayName) || '?';
+  const homeFlag = flag(match?.homeName || q.home);
+  const awayFlag = flag(match?.awayName || (q.away || ''));
+
+  const mPts = mScore.pts;
+  const rPts = rScore.pts;
+  const mPtsHtml = hasResult ? `<span class="pts-num">+${mPts} pts</span>` : `<span style="color:var(--muted)">—</span>`;
+  const rPtsHtml = hasResult ? `<span class="pts-num">+${rPts} pts</span>` : `<span style="color:var(--muted)">—</span>`;
+
+  return `
+<div class="match-card" id="card-${idx}">
+  <div class="mc-top">
+    <span class="mc-num">PARTIDO ${idx+1}</span>
+    ${statusHtml}
+  </div>
+  ${resultHtml}
+  <div class="mc-teams">
+    <div class="mc-team home">
+      <span class="mc-flag">${homeFlag}</span>
+      <span class="mc-tname">${match?.homeName || q.home}</span>
+    </div>
+    <span class="mc-sep">vs</span>
+    <div class="mc-team away">
+      <span class="mc-flag">${awayFlag}</span>
+      <span class="mc-tname">${match?.awayName || awayDisplay}</span>
+    </div>
+  </div>
+  <div class="mc-preds">
+    <div class="pred m">
+      <span class="pred-who m">Marce</span>
+      <span class="pred-scr">${formatPred(q.marce, 'Ganador ?')}</span>
+      <div class="pred-info">${badgeHtml(mScore.badge)} ${mPtsHtml}</div>
+    </div>
+    <div class="pred r">
+      <span class="pred-who r">Roberto</span>
+      <span class="pred-scr">${formatPred(q.roberto, 'Ganador ?')}</span>
+      <div class="pred-info">${badgeHtml(rScore.badge)} ${rPtsHtml}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function calcTotals() {
+  let mT=0, rT=0, mE=0, rE=0, mW=0, rW=0;
+  QUINIELA.forEach(q => {
+    const match = findMatch(q.home, q.away);
+    const hasResult = match && match.homeScore !== null;
+    const aH = hasResult ? match.homeScore : null;
+    const aA = hasResult ? match.awayScore : null;
+    const penW = match?.penWinner || null;
+    const ms = calcPoints(q.marce, aH, aA, penW);
+    const rs = calcPoints(q.roberto, aH, aA, penW);
+    mT += ms.pts; rT += rs.pts;
+    if (ms.badge==='exact') mE++;
+    if (rs.badge==='exact') rE++;
+    if (ms.badge==='win') mW++;
+    if (rs.badge==='win') rW++;
+  });
+  return {mT,rT,mE,rE,mW,rW};
+}
+
+function renderAll() {
+  const t = calcTotals();
+
+  // Update scoreboard
+  document.getElementById('pts-marce').textContent   = t.mT;
+  document.getElementById('pts-roberto').textContent = t.rT;
+
+  // API status
+  const dot = document.getElementById('live-dot');
+  const st  = document.getElementById('api-status');
+  if (hasLive) {
+    dot.className='live-dot'; st.textContent='EN VIVO';
+  } else {
+    dot.className='live-dot off';
+    st.textContent = lastFetch ? 'Actualizado ' + lastFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : 'Offline';
+  }
+
+  // Leader
+  let leaderName='', leaderClass='', leaderDiff='';
+  if (t.mT > t.rT) { leaderName='Marce'; leaderClass='marce'; leaderDiff=`↑ ${t.mT-t.rT} pts de ventaja`; }
+  else if (t.rT > t.mT) { leaderName='Roberto'; leaderClass='roberto'; leaderDiff=`↑ ${t.rT-t.mT} pts de ventaja`; }
+  else { leaderName='¡Empate!'; leaderClass='tie'; leaderDiff='Mano a mano 🔥'; }
+
+  const statsHtml = `
+    <div class="leader-card">
+      <div class="leader-left">
+        <span class="leader-label">Líder actual</span>
+        <span class="leader-name ${leaderClass}">${leaderName}</span>
+      </div>
+      <span class="leader-diff">${leaderDiff}</span>
+    </div>
+    <div class="sec-label">Dieciseisavos de Final</div>
+    <h2 class="sec-title">Tabla de Posiciones</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val marce">${t.mT}</div><div class="stat-lbl">Puntos Marce</div></div>
+      <div class="stat-card"><div class="stat-val roberto">${t.rT}</div><div class="stat-lbl">Puntos Roberto</div></div>
+      <div class="stat-card"><div class="stat-val marce">${t.mE}</div><div class="stat-lbl">Exactos Marce</div></div>
+      <div class="stat-card"><div class="stat-val roberto">${t.rE}</div><div class="stat-lbl">Exactos Roberto</div></div>
+      <div class="stat-card"><div class="stat-val marce">${t.mW}</div><div class="stat-lbl">Ganadores Marce</div></div>
+      <div class="stat-card"><div class="stat-val roberto">${t.rW}</div><div class="stat-lbl">Ganadores Roberto</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="sec-label" style="margin-top:40px">Dieciseisavos · Todos los partidos</div>
+    <h2 class="sec-title">La Llave</h2>
+    <div class="legend">
+      <div class="leg-item"><span class="badge-exact">EXACTO</span> Marcador exacto = 3 pts</div>
+      <div class="leg-item"><span class="badge-win">GANADOR</span> Solo ganador = 1 pt</div>
+      <div class="leg-item" style="color:var(--muted)">🔴 Partido en vivo</div>
+      <div class="leg-item" style="color:var(--muted)">⏳ Por jugarse</div>
+    </div>
+    <div class="matches-grid" id="matches-grid">
+      ${QUINIELA.map((q,i) => renderCard(q,i)).join('')}
+    </div>
+    <div class="last-update" id="last-update">
+      ${lastFetch ? `Última actualización: ${lastFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit',second:'2-digit'})} · Refresca cada 60s` : ''}
+    </div>
+  `;
+
+  document.getElementById('main').innerHTML = statsHtml;
+
+  // Scroll reveal
+  requestAnimationFrame(() => {
+    const cards = document.querySelectorAll('.match-card');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e,i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 55);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    cards.forEach(c => obs.observe(c));
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  INIT & AUTO-REFRESH
+// ═══════════════════════════════════════════════
+async function init() {
+  const ok = await fetchESPN();
+  if (!ok) {
+    document.getElementById('main').innerHTML = `
+      <div class="api-error">
+        <p>No se pudo conectar con ESPN. Verifica tu conexión.</p>
+        <button onclick="init()">Reintentar</button>
+      </div>`;
+    // Still render with empty data
+    renderAll();
+    return;
+  }
+  renderAll();
+  // Refresh every 60s (30s if live game)
+  clearInterval(fetchInterval);
+  fetchInterval = setInterval(async () => {
+    await fetchESPN();
+    renderAll();
+    fetchInterval = setInterval(async () => {
+      await fetchESPN(); renderAll();
+    }, hasLive ? 30000 : 60000);
+  }, hasLive ? 30000 : 60000);
+}
+
+// Parallax
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const bg   = document.getElementById('bgLayer');
+  const grid = document.getElementById('gridLayer');
+  if (bg)   bg.style.transform   = `translateY(${y*0.33}px)`;
+  if (grid) grid.style.transform = `translateY(${y*0.18}px)`;
+}, { passive: true });
+
+init();
+</script>
+</body>
+</html>
