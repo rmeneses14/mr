@@ -23,7 +23,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .hscr{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fI 1s 1.3s forwards;cursor:pointer;text-decoration:none;color:var(--muted)}
 .hscr span{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase}
 .sarr{width:18px;height:18px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);animation:bnc 1.3s infinite}
-/* STICKY */
 .sbar{position:sticky;top:0;z-index:100;background:rgba(7,11,20,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:10px 16px}
 .si{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:clamp(10px,3vw,40px)}
 .sp{display:flex;flex-direction:column;align-items:center;gap:1px}
@@ -36,7 +35,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .sinf{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:var(--muted);letter-spacing:.15em;text-align:center}
 .ld{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pls 1.2s infinite;margin-right:4px;vertical-align:middle}
 .ld.off{background:var(--muted);animation:none}
-/* MAIN */
 .main{max-width:1100px;margin:0 auto;padding:64px 16px 80px}
 .sl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
 .stit{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:.04em;line-height:1;margin-bottom:40px}
@@ -46,7 +44,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .lname{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.05em}
 .lname.m{color:var(--marce)}.lname.r{color:var(--roberto)}.lname.t{color:var(--gold)}
 .ldiff{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold)}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:48px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:48px}
 .sc{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:20px 16px;text-align:center}
 .sv{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1}
 .sv.m{color:var(--marce)}.sv.r{color:var(--roberto)}
@@ -65,23 +63,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .mct{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .mcn{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.18em}
 .mcs{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;padding:2px 7px;border-radius:10px}
-.mcs.live{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
 .mcs.fin{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2)}
 .mcs.soon{background:rgba(136,150,176,.1);color:var(--muted);border:1px solid rgba(136,150,176,.2)}
+.res{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:7px;padding:5px 10px;margin-bottom:10px}
+.res.fr{background:rgba(245,200,66,.07)}.res.pr{background:rgba(136,150,176,.06)}
+.rl{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.15em}
+.rs{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.05em}
+.res.fr .rs{color:var(--gold)}.res.pr .rs{color:var(--muted);font-size:.85rem}
 .mctm{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .tm{display:flex;align-items:center;gap:6px;flex:1}
 .tm.aw{flex-direction:row-reverse;text-align:right}
 .fl{font-size:1.25rem}.tn{font-weight:600;font-size:.82rem}
 .sep{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--muted);flex-shrink:0}
-.res{display:flex;align-items:center;justify-content:center;gap:10px;border-radius:7px;padding:5px 10px;margin-bottom:10px}
-.res.fr{background:rgba(245,200,66,.07)}.res.lr{background:rgba(34,197,94,.08)}.res.pr{background:rgba(136,150,176,.06)}
-.rl{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.15em}
-.rs{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.05em}
-.res.fr .rs{color:var(--gold)}.res.lr .rs{color:#22c55e}.res.pr .rs{color:var(--muted);font-size:.85rem}
 .preds{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
-.pr{border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
-.pr.pm{background:rgba(233,30,99,.08);border:1px solid rgba(233,30,99,.2)}
-.pr.pr2{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2)}
+.pr2{border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.pr2.pm{background:rgba(233,30,99,.08);border:1px solid rgba(233,30,99,.2)}
+.pr2.prr{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2)}
 .pw{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase}
 .pw.m{color:var(--marce)}.pw.r{color:var(--roberto)}
 .psc{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;line-height:1.1}
@@ -127,69 +124,64 @@ footer{border-top:1px solid var(--border);padding:28px 16px;text-align:center;co
 <main class="main" id="main">
   <div style="text-align:center;padding:60px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.75rem">
     <div style="width:18px;height:18px;border:2px solid rgba(245,200,66,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px"></div>
-    Consultando resultados…
+    Cargando resultados…
   </div>
 </main>
-<footer><p>⚽ Quiniela Marce vs Roberto · FIFA World Cup 2026 · Actualización automática</p></footer>
+<footer><p>⚽ Quiniela Marce vs Roberto · FIFA World Cup 2026 · Datos: openfootball/worldcup.json · Actualización automática</p></footer>
 
 <script>
-// ── FLAGS ──────────────────────────────────────────
+// ── FLAGS ─────────────────────────────────────────
 const FL={
-  'Germany':'🇩🇪','Paraguay':'🇵🇾','France':'🇫🇷','Sweden':'🇸🇪',
-  'South Africa':'🇿🇦','Canada':'🇨🇦','Netherlands':'🇳🇱','Morocco':'🇲🇦',
-  'Portugal':'🇵🇹','Croatia':'🇭🇷','Spain':'🇪🇸',
-  'United States':'🇺🇸','USA':'🇺🇸',
-  'Bosnia and Herzegovina':'🇧🇦','Bosnia-Herz':'🇧🇦',
-  'Belgium':'🇧🇪','Senegal':'🇸🇳','Austria':'🇦🇹','Algeria':'🇩🇿',
-  'Brazil':'🇧🇷','Japan':'🇯🇵',
-  'Ivory Coast':'🇨🇮','Côte d\'Ivoire':'🇨🇮',
-  'Norway':'🇳🇴','Mexico':'🇲🇽','Ecuador':'🇪🇨','England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-  'DR Congo':'🇨🇩','Congo':'🇨🇩',
-  'Argentina':'🇦🇷','Cape Verde':'🇨🇻','Australia':'🇦🇺','Egypt':'🇪🇬',
-  'Switzerland':'🇨🇭','Colombia':'🇨🇴','Ghana':'🇬🇭',
+  'Mexico':'🇲🇽','South Africa':'🇿🇦','South Korea':'🇰🇷','Czech Republic':'🇨🇿',
+  'Canada':'🇨🇦','Bosnia & Herzegovina':'🇧🇦','Bosnia and Herzegovina':'🇧🇦',
+  'Qatar':'🇶🇦','Switzerland':'🇨🇭','Brazil':'🇧🇷','Morocco':'🇲🇦',
+  'Haiti':'🇭🇹','Scotland':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','USA':'🇺🇸','Paraguay':'🇵🇾',
+  'Australia':'🇦🇺','Turkey':'🇹🇷','Germany':'🇩🇪','Curaçao':'🇨🇼',
+  'Ivory Coast':'🇨🇮','Ecuador':'🇪🇨','Netherlands':'🇳🇱','Japan':'🇯🇵',
+  'Sweden':'🇸🇪','Tunisia':'🇹🇳','Belgium':'🇧🇪','Egypt':'🇪🇬',
+  'Iran':'🇮🇷','New Zealand':'🇳🇿','Spain':'🇪🇸','Cape Verde':'🇨🇻',
+  'Saudi Arabia':'🇸🇦','Uruguay':'🇺🇾','France':'🇫🇷','Senegal':'🇸🇳',
+  'Iraq':'🇮🇶','Norway':'🇳🇴','Argentina':'🇦🇷','Algeria':'🇩🇿',
+  'Austria':'🇦🇹','Jordan':'🇯🇴','Portugal':'🇵🇹','DR Congo':'🇨🇩',
+  'Uzbekistan':'🇺🇿','Colombia':'🇨🇴','England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croatia':'🇭🇷',
+  'Ghana':'🇬🇭','Panama':'🇵🇦',
 };
 const flag=n=>FL[n]||'🏳️';
 
-// ── QUINIELA DATA ──────────────────────────────────
+// ── QUINIELA ─────────────────────────────────────
 // pred=[home,away] o [home,away,'G','home'|'away']
-// 'G' = fueron a penales; 4º arg = quién ganó pens
+// La clave "t1" y "t2" deben coincidir con los nombres del JSON de openfootball
 const Q=[
-  {n:1, home:'South Africa',away:'Canada',           m:[0,2],          r:[1,2]},
-  {n:2, home:'Netherlands', away:'Morocco',           m:[1,1,'G','home'],r:[2,1]},
-  {n:3, home:'Germany',     away:'Paraguay',          m:[3,0],          r:[3,0]},
-  {n:4, home:'France',      away:'Sweden',            m:[3,1],          r:[3,0]},
-  {n:5, home:'Belgium',     away:'Senegal',           m:[2,1],          r:[1,0]},
-  {n:6, home:'United States',away:'Bosnia and Herzegovina',m:[2,1],    r:[3,0]},
-  {n:7, home:'Spain',       away:'Austria',           m:[2,0],          r:[2,0]},
-  {n:8, home:'Croatia',     away:'Portugal',          m:[1,1,'G','away'],r:[1,2]},
-  {n:9, home:'Brazil',      away:'Japan',             m:[1,1,'G','away'],r:[2,2,'G','away']},
-  {n:10,home:'Ivory Coast', away:'Norway',            m:[1,2],          r:[0,2]},
-  {n:11,home:'Mexico',      away:'Ecuador',           m:[1,1,'G','home'],r:[2,1]},
-  {n:12,home:'England',     away:'DR Congo',          m:[2,0],          r:[2,1]},
-  {n:13,home:'Switzerland', away:'Algeria',           m:[2,0],          r:[1,0]},
-  {n:14,home:'Ghana',       away:'Colombia',          m:[1,1,'G','away'],r:[0,2]},
-  {n:15,home:'Australia',   away:'Egypt',             m:[1,2],          r:[1,0]},
-  {n:16,home:'Argentina',   away:'Cape Verde',        m:[3,0],          r:[3,0]},
+  {n:1,  t1:'South Africa', t2:'Canada',               m:[0,2],            r:[1,2]},
+  {n:2,  t1:'Netherlands',  t2:'Morocco',               m:[1,1,'G','home'], r:[2,1]},
+  {n:3,  t1:'Germany',      t2:'Paraguay',              m:[3,0],            r:[3,0]},
+  {n:4,  t1:'France',       t2:'Sweden',                m:[3,1],            r:[3,0]},
+  {n:5,  t1:'Belgium',      t2:'Senegal',               m:[2,1],            r:[1,0]},
+  {n:6,  t1:'USA',          t2:'Bosnia & Herzegovina',  m:[2,1],            r:[3,0]},
+  {n:7,  t1:'Spain',        t2:'Austria',               m:[2,0],            r:[2,0]},
+  {n:8,  t1:'Croatia',      t2:'Portugal',              m:[1,1,'G','away'], r:[1,2]},
+  {n:9,  t1:'Brazil',       t2:'Japan',                 m:[1,1,'G','away'], r:[2,2,'G','away']},
+  {n:10, t1:'Ivory Coast',  t2:'Norway',                m:[1,2],            r:[0,2]},
+  {n:11, t1:'Mexico',       t2:'Ecuador',               m:[1,1,'G','home'], r:[2,1]},
+  {n:12, t1:'England',      t2:'DR Congo',              m:[2,0],            r:[2,1]},
+  {n:13, t1:'Switzerland',  t2:'Algeria',               m:[2,0],            r:[1,0]},
+  {n:14, t1:'Ghana',        t2:'Colombia',              m:[1,1,'G','away'], r:[0,2]},
+  {n:15, t1:'Australia',    t2:'Egypt',                 m:[1,2],            r:[1,0]},
+  {n:16, t1:'Argentina',    t2:'Cape Verde',            m:[3,0],            r:[3,0]},
 ];
 
-// ── SCORING ────────────────────────────────────────
+// ── SCORING ──────────────────────────────────────
 function pts(pred,aH,aA,penW){
   if(!pred||aH===null||aA===null)return{p:0,b:null};
   const[pH,pA,sfx,pPW]=pred;
   const phN=+pH,paN=+pA;
   const rW=aH>aA?'H':aA>aH?'A':penW?(penW==='home'?'H':'A'):'D';
-  let dW;
-  if(phN>paN)dW='H';
-  else if(paN>phN)dW='A';
-  else if(sfx==='G')dW=pPW==='home'?'H':pPW==='away'?'A':'P';
-  else dW='D';
-  // Exacto
+  let dW=phN>paN?'H':paN>phN?'A':sfx==='G'?(pPW==='home'?'H':pPW==='away'?'A':'P'):'D';
   if(phN===aH&&paN===aA){
     if(!sfx&&!penW)return{p:3,b:'e'};
     if(sfx==='G'&&penW)return{p:3,b:'e'};
     return{p:0,b:null};
   }
-  // Ganador
   if(rW!=='D'&&(rW===dW||(dW==='P'&&rW!=='D')))return{p:1,b:'w'};
   return{p:0,b:null};
 }
@@ -205,147 +197,87 @@ function fmt(pred){
   return`${h} – ${a}`;
 }
 
-// ── ESPN DATA LAYER ────────────────────────────────
-// Resultados hardcodeados — nunca quedan vacíos aunque ESPN falle
-const HC=[
-  {h:'South Africa',a:'Canada',hS:0,aS:1,done:true,live:false,pen:null},
-];
+// ── API openfootball/worldcup.json ───────────────
+// Gratis, sin key, CORS abierto, actualizado diariamente con resultados reales
+const API_URL='https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json';
 
-let IDX={}, lFetch=null, hasLive=false, tmr=null;
+let RESULTS={};  // norm(t1+'|'+t2) → {hS,aS,done,pen}
+let lFetch=null, tmr=null;
 
+// Normaliza nombre de equipo para match
 function N(s){
   return(s||'').toLowerCase().trim()
-    .replace(/united states/gi,'usa')
-    .replace(/côte d.ivoire|cote d.ivoire/gi,'ivory coast')
-    .replace(/dr\.?\s*congo|congo,?\s*dr\.?|democratic republic.*congo/gi,'dr congo')
-    .replace(/bosnia[\s-]herz\.?|bosnia\s*&\s*herzegovina/gi,'bosnia and herzegovina')
+    .replace(/&/g,'and')
     .replace(/\s+/g,' ');
 }
+function key(a,b){return N(a)+'|'+N(b);}
 
-function addEntry(e){
-  const hn=N(e.h||e.homeName), an=N(e.a||e.awayName);
-  const en={homeName:e.h||e.homeName,awayName:e.a||e.awayName,
-    hS:e.hS??e.homeScore,aS:e.aS??e.awayScore,
-    done:e.done??e.completed,live:e.live,pen:e.pen??e.penWinner,clk:e.clk||''};
-  if(hn)IDX[hn]=en;
-  if(an)IDX[an]={...en,homeName:e.a||e.awayName,awayName:e.h||e.homeName,
-    hS:en.aS,aS:en.hS,pen:en.pen==='home'?'away':en.pen==='away'?'home':null};
-}
+async function fetchData(){
+  try{
+    const r=await fetch(API_URL+'?t='+Date.now()); // cache-bust
+    if(!r.ok)throw new Error(r.status);
+    const data=await r.json();
+    RESULTS={};
 
-function todayStr(){
-  // Fecha actual en formato YYYYMMDD basada en UTC-5 (hora de Costa Rica/México)
-  const d=new Date(Date.now()-5*3600000);
-  return`${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}`;
-}
+    (data.matches||[]).forEach(m=>{
+      if(!m.score)return; // sin resultado aún
+      const hS=m.score.ft?.[0]??null;
+      const aS=m.score.ft?.[1]??null;
+      if(hS===null||aS===null)return;
 
-async function espnFetch(url){
-  const r=await fetch(url);
-  if(!r.ok)throw new Error(r.status);
-  return r.json();
-}
+      // Penales: openfootball marca "p" en el score cuando hay penales
+      // p=[penH, penA]
+      let penW=null;
+      if(m.score.p){
+        const[pH,pA]=m.score.p;
+        penW=pH>pA?'home':'away';
+      }
 
-function parseEvents(events){
-  events.forEach(ev=>{
-    const c=ev.competitions?.[0]; if(!c)return;
-    const ts=c.competitors||[];
-    const ho=ts.find(t=>t.homeAway==='home')||ts[0];
-    const aw=ts.find(t=>t.homeAway==='away')||ts[1];
-    if(!ho||!aw)return;
-    const hn=ho.team?.displayName||'', an=aw.team?.displayName||'';
-    const st=c.status?.type?.name||'';
-    const done=c.status?.type?.completed||false;
-    const live=st==='STATUS_IN_PROGRESS';
-    if(live)hasLive=true;
-    const hS=(done||live)?+( ho.score??0):null;
-    const aS=(done||live)?+( aw.score??0):null;
-    let pen=null;
-    if(done&&hS===aS){
-      if(ho.winner===true)pen='home';
-      if(aw.winner===true)pen='away';
-    }
-    addEntry({h:hn,a:an,hS,aS,done,live,pen,clk:c.status?.displayClock||''});
-  });
-}
-
-async function fetchAll(){
-  IDX={};
-  HC.forEach(addEntry);
-  hasLive=false;
-
-  const BASE='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
-  const today=todayStr();
-  // 3 llamadas en paralelo:
-  // 1) Hoy exacto → captura partido EN VIVO del día
-  // 2) Rango histórico del torneo
-  // 3) Mañana (por si el reloj del servidor difiere)
-  const urls=[
-    `${BASE}?limit=100&dates=${today}`,
-    `${BASE}?limit=200&dates=20260628-20260719`,
-    `${BASE}?limit=100`,
-  ];
-
-  const results=await Promise.allSettled(urls.map(u=>espnFetch(u)));
-  const seen=new Set();
-
-  for(const res of results){
-    if(res.status!=='fulfilled')continue;
-    const evs=(res.value.events||[]);
-    const fresh=evs.filter(ev=>{
-      if(seen.has(ev.id))return false;
-      seen.add(ev.id);return true;
+      RESULTS[key(m.team1,m.team2)]={hS,aS,done:true,penW,t1:m.team1,t2:m.team2};
+      RESULTS[key(m.team2,m.team1)]={hS:aS,aS:hS,done:true,penW:penW==='home'?'away':penW==='away'?'home':null,t1:m.team2,t2:m.team1};
     });
-    parseEvents(fresh);
-  }
 
-  lFetch=new Date();
+    lFetch=new Date();
+    return true;
+  }catch(e){
+    console.warn('openfootball fetch error:',e.message);
+    lFetch=new Date();
+    return false;
+  }
 }
 
-// ── FIND MATCH ─────────────────────────────────────
-function find(homeT,awayT){
-  const hn=N(homeT), an=awayT?N(awayT):null;
-  // Exacto
-  if(IDX[hn]){
-    const e=IDX[hn]; if(!an)return e;
-    const ea=N(e.awayName);
-    if(ea===an||ea.slice(0,6)===an.slice(0,6))return e;
-  }
-  // Parcial
-  for(const k of Object.keys(IDX)){
-    if(k.slice(0,5)===hn.slice(0,5)){
-      const e=IDX[k]; if(!an)return e;
-      const ea=N(e.awayName);
-      if(ea.slice(0,5)===an.slice(0,5))return e;
-    }
+function findResult(q){
+  // Intentar match exacto primero
+  const k=key(q.t1,q.t2);
+  if(RESULTS[k])return RESULTS[k];
+  // Fallback: buscar parcial (primera palabra del nombre)
+  const h=N(q.t1).split(' ')[0];
+  const a=N(q.t2).split(' ')[0];
+  for(const rk of Object.keys(RESULTS)){
+    const[rh,ra]=rk.split('|');
+    if(rh.startsWith(h)&&ra.startsWith(a))return RESULTS[rk];
   }
   return null;
 }
 
-// ── RENDER ─────────────────────────────────────────
+// ── RENDER ───────────────────────────────────────
 const bh=b=>b==='e'?'<span class="bex">EXACTO</span>':b==='w'?'<span class="bwi">GANADOR</span>':'';
 
 function card(q,i){
-  const mx=find(q.home,q.away);
-  const hasR=mx&&mx.hS!==null;
-  const isL=mx?.live||false;
-  const aH=hasR?mx.hS:null, aA=hasR?mx.aS:null, penW=mx?.pen||null;
+  const res=findResult(q);
+  const hasR=res&&res.hS!==null;
+  const aH=hasR?res.hS:null, aA=hasR?res.aS:null, penW=res?.penW||null;
   const ms=pts(q.m,aH,aA,penW), rs=pts(q.r,aH,aA,penW);
 
-  let stHtml;
-  if(isL)stHtml=`<span class="mcs live">🔴 ${mx.clk||'EN VIVO'}</span>`;
-  else if(hasR)stHtml=`<span class="mcs fin">FINAL</span>`;
-  else{
-    const ds=mx?.date?new Date(mx.date).toLocaleDateString('es',{day:'numeric',month:'short'}):'Por jugar';
-    stHtml=`<span class="mcs soon">${ds}</span>`;
-  }
+  const stHtml=hasR?
+    `<span class="mcs fin">FINAL${penW?' · PENS':''}</span>`:
+    `<span class="mcs soon">Por jugar</span>`;
 
-  let resHtml;
-  if(isL)resHtml=`<div class="res lr"><span class="rl">EN VIVO</span><span class="rs">${aH} – ${aA}</span></div>`;
-  else if(hasR){
-    const pl=penW?`<small style="font-size:.5rem;color:var(--muted);font-family:'JetBrains Mono',monospace"> PENS</small>`:'';
-    resHtml=`<div class="res fr"><span class="rl">RESULTADO</span><span class="rs">${aH} – ${aA}${pl}</span></div>`;
-  }else resHtml=`<div class="res pr"><span class="rl">RESULTADO</span><span class="rs">– – –</span></div>`;
+  const resHtml=hasR?
+    `<div class="res fr"><span class="rl">RESULTADO</span><span class="rs">${aH} – ${aA}</span></div>`:
+    `<div class="res pr"><span class="rl">RESULTADO</span><span class="rs">– – –</span></div>`;
 
-  const hN=mx?.homeName||q.home, aN=mx?.awayName||q.away;
+  const hN=res?.t1||q.t1, aN=res?.t2||q.t2;
   const mP=hasR?`<span class="pn">${ms.p>0?'+'+ms.p+' pts':'0 pts'}</span>`:`<span style="color:var(--muted)">–</span>`;
   const rP=hasR?`<span class="pn">${rs.p>0?'+'+rs.p+' pts':'0 pts'}</span>`:`<span style="color:var(--muted)">–</span>`;
 
@@ -358,8 +290,8 @@ function card(q,i){
     <div class="tm aw"><span class="fl">${flag(aN)}</span><span class="tn">${aN}</span></div>
   </div>
   <div class="preds">
-    <div class="pr pm"><span class="pw m">Marce</span><span class="psc">${fmt(q.m)}</span><div class="pi">${bh(ms.b)} ${mP}</div></div>
-    <div class="pr pr2"><span class="pw r">Roberto</span><span class="psc">${fmt(q.r)}</span><div class="pi">${bh(rs.b)} ${rP}</div></div>
+    <div class="pr2 pm"><span class="pw m">Marce</span><span class="psc">${fmt(q.m)}</span><div class="pi">${bh(ms.b)} ${mP}</div></div>
+    <div class="pr2 prr"><span class="pw r">Roberto</span><span class="psc">${fmt(q.r)}</span><div class="pi">${bh(rs.b)} ${rP}</div></div>
   </div>
 </div>`;
 }
@@ -367,10 +299,10 @@ function card(q,i){
 function totals(){
   let mT=0,rT=0,mE=0,rE=0,mW=0,rW=0;
   Q.forEach(q=>{
-    const mx=find(q.home,q.away);
-    const hasR=mx&&mx.hS!==null;
-    const aH=hasR?mx.hS:null,aA=hasR?mx.aS:null,penW=mx?.pen||null;
-    const ms=pts(q.m,aH,aA,penW),rs=pts(q.r,aH,aA,penW);
+    const res=findResult(q);
+    const hasR=res&&res.hS!==null;
+    const ms=pts(q.m,hasR?res.hS:null,hasR?res.aS:null,res?.penW||null);
+    const rs=pts(q.r,hasR?res.hS:null,hasR?res.aS:null,res?.penW||null);
     mT+=ms.p;rT+=rs.p;
     if(ms.b==='e')mE++;if(rs.b==='e')rE++;
     if(ms.b==='w')mW++;if(rs.b==='w')rW++;
@@ -382,9 +314,10 @@ function renderAll(){
   const t=totals();
   document.getElementById('pm').textContent=t.mT;
   document.getElementById('pr').textContent=t.rT;
-  const dot=document.getElementById('ldot'),ast=document.getElementById('ast');
-  if(hasLive){dot.className='ld';ast.textContent='🔴 EN VIVO';}
-  else{dot.className='ld off';ast.textContent=lFetch?'ESPN·'+lFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}):'Cargando…';}
+  document.getElementById('ldot').className='ld off';
+  document.getElementById('ast').textContent=lFetch
+    ?'openfootball · '+lFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})
+    :'Cargando…';
 
   let lN,lC,lD;
   if(t.mT>t.rT){lN='Marce';lC='m';lD=`↑ ${t.mT-t.rT} pts de ventaja`;}
@@ -412,10 +345,10 @@ function renderAll(){
   <div class="leg">
     <div class="li"><span class="bex">EXACTO</span> Marcador exacto = 3 pts</div>
     <div class="li"><span class="bwi">GANADOR</span> Solo ganador = 1 pt</div>
-    <div class="li">🔴 En vivo · ⏳ Por jugarse</div>
+    <div class="li">PENS = fue a penales</div>
   </div>
   <div class="mg">${Q.map((q,i)=>card(q,i)).join('')}</div>
-  <div class="lu">${lFetch?`Actualizado: ${lFetch.toLocaleTimeString('es')} · auto-refresca cada 30s`:''}</div>`;
+  <div class="lu">Fuente: openfootball/worldcup.json · ${lFetch?'Actualizado: '+lFetch.toLocaleTimeString('es'):'–'} · refresca cada 5 min</div>`;
 
   requestAnimationFrame(()=>{
     const obs=new IntersectionObserver(es=>{
@@ -425,20 +358,18 @@ function renderAll(){
   });
 }
 
-// ── PARALLAX ───────────────────────────────────────
 window.addEventListener('scroll',()=>{
   const y=window.scrollY;
   document.getElementById('hbg').style.transform=`translateY(${y*.33}px)`;
   document.getElementById('hgrid').style.transform=`translateY(${y*.18}px)`;
 },{passive:true});
 
-// ── INIT ───────────────────────────────────────────
 async function init(){
-  await fetchAll();
+  await fetchData();
   renderAll();
   clearInterval(tmr);
-  // Siempre cada 30s — si hay partido live se ve al instante, si no es barato
-  tmr=setInterval(async()=>{await fetchAll();renderAll();},30000);
+  // openfootball actualiza ~1x/día, pero pedimos cada 5 min para no abusar
+  tmr=setInterval(async()=>{await fetchData();renderAll();},5*60*1000);
 }
 init();
 </script>
