@@ -260,7 +260,7 @@
 </main>
 
 <footer>
-  <p>⚽ Quiniela Marce vs Roberto · FIFA World Cup 2026 · Resultados en tiempo real vía ESPN</p>
+  <p>⚽ Quiniela Marce vs Roberto · FIFA World Cup 2026 · Resultados en tiempo real vía API Oficial FIFA</p>
 </footer>
 
 <script>
@@ -416,98 +416,125 @@ function formatPred(pred, winnerName) {
 }
 
 // ═══════════════════════════════════════════════
-//  ESPN API
+//  FIFA OFFICIAL API  (api.fifa.com/api/v3)
+//  La misma que usa fifa.com — sin API key, gratis
+//  Competition 17 = FIFA World Cup | Season 285023 = 2026
 // ═══════════════════════════════════════════════
-const ESPN_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?limit=200';
-let liveData = {}; // key → { homeScore, awayScore, status, minute }
+const FIFA_URL = 'https://api.fifa.com/api/v3/calendar/matches' +
+  '?idCompetition=17&idSeason=285023&count=200&language=en-US';
+
+// Mapa por nombre de equipo (cualquier lado) → resultado
+// key: nombre normalizado → entry
+let teamIndex = {};   // 'germany' → entry con esa info
 let lastFetch = null;
 let fetchInterval = null;
 let hasLive = false;
 
-async function fetchESPN() {
+// Normaliza nombre para comparar
+const norm = s => (s || '').toLowerCase()
+  .replace(/\s+/g,' ').trim()
+  .replace('côte d\'ivoire','ivory coast')
+  .replace('cote d\'ivoire','ivory coast')
+  .replace('united states','usa')
+  .replace('dr congo','congo')
+  .replace('congo dr','congo')
+  .replace('democratic republic of the congo','congo')
+  .replace('bosnia & herzegovina','bosnia')
+  .replace('bosnia and herzegovina','bosnia')
+  .replace('cape verde','cabo verde');
+
+async function fetchFIFA() {
   try {
-    const r = await fetch(ESPN_URL);
-    if (!r.ok) throw new Error('ESPN returned ' + r.status);
+    const r = await fetch(FIFA_URL, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('FIFA API returned ' + r.status);
     const data = await r.json();
-    const events = data.events || [];
 
-    // Build lookup by team name pair
-    liveData = {};
-    events.forEach(ev => {
-      const comp = ev.competitions?.[0];
-      if (!comp) return;
-      const teams = comp.competitors || [];
-      const home = teams.find(t => t.homeAway === 'home') || teams[0];
-      const away = teams.find(t => t.homeAway === 'away') || teams[1];
-      if (!home || !away) return;
+    const matches = data.Results || [];
+    teamIndex = {};
+    hasLive = false;
 
-      const hn = home.team?.displayName || home.team?.name || '';
-      const an = away.team?.displayName || away.team?.name || '';
-      const status = comp.status?.type?.name || 'pre';
-      const period = comp.status?.displayClock || '';
-      const completed = comp.status?.type?.completed || false;
+    matches.forEach(m => {
+      // Solo partidos de la fase de 32 en adelante (IdStage Round of 32 = knockout)
+      const homeTeam = m.Home?.TeamName?.[0]?.Description || m.Home?.IdTeam || '';
+      const awayTeam = m.Away?.TeamName?.[0]?.Description || m.Away?.IdTeam || '';
 
-      // Try to detect penalty shootout winner from notes or situation
+      // Scores: FIFA usa PlaceHolderA/B para equipos TBD, y Score para goles
+      const homeScore = m.Home?.Score ?? null;
+      const awayScore = m.Away?.Score ?? null;
+
+      // Status: 0=scheduled, 1=live, 3=finished, 4=finished(AET), 5=finished(pens)
+      const statusId = m.MatchStatus;
+      const isLive      = statusId === 1;
+      const isFinished  = statusId === 3 || statusId === 4 || statusId === 5;
+      const isPens      = statusId === 5;
+      const isAET       = statusId === 4;
+
+      if (isLive) hasLive = true;
+
+      // Penalty winner
       let penWinner = null;
-      const notes = comp.notes || [];
-      const situation = comp.situation || {};
-      // ESPN sometimes puts "Won on Penalties" in status detail
-      const detail = comp.status?.type?.description || '';
-      if (detail.toLowerCase().includes('penalt')) {
-        // Check which team won — winner has wonOnPenalties flag or higher score
-        const homeWon = home.winner === true;
-        const awayWon = away.winner === true;
-        if (homeWon) penWinner = 'home';
-        else if (awayWon) penWinner = 'away';
-      }
-      // Also check winner flags regardless
-      if (!penWinner && completed) {
-        if (home.winner === true && parseInt(home.score||0) === parseInt(away.score||0)) penWinner = 'home';
-        if (away.winner === true && parseInt(home.score||0) === parseInt(away.score||0)) penWinner = 'away';
+      if (isPens) {
+        const hPens = m.Home?.PenaltyScore ?? 0;
+        const aPens = m.Away?.PenaltyScore ?? 0;
+        penWinner = hPens > aPens ? 'home' : 'away';
       }
 
       const entry = {
-        homeScore: completed || status === 'STATUS_IN_PROGRESS' ? parseInt(home.score || 0) : null,
-        awayScore: completed || status === 'STATUS_IN_PROGRESS' ? parseInt(away.score || 0) : null,
-        status, completed,
-        live: status === 'STATUS_IN_PROGRESS',
-        clock: period,
-        homeName: hn, awayName: an,
-        date: comp.date,
+        homeName: homeTeam,
+        awayName: awayTeam,
+        homeScore: (isLive || isFinished) ? homeScore : null,
+        awayScore: (isLive || isFinished) ? awayScore : null,
+        live: isLive,
+        completed: isFinished,
+        isPens,
+        isAET,
         penWinner,
+        clock: m.MatchTime || '',
+        date: m.Date,
       };
 
-      liveData[hn + '|' + an] = entry;
-      liveData[an + '|' + hn] = { ...entry,
+      // Indexar por nombre normalizado de ambos equipos
+      const hn = norm(homeTeam);
+      const an = norm(awayTeam);
+      if (hn) teamIndex[hn] = entry;
+      if (an) teamIndex[an] = { ...entry,
+        homeName: awayTeam, awayName: homeTeam,
         homeScore: entry.awayScore, awayScore: entry.homeScore,
-        homeName: an, awayName: hn,
         penWinner: penWinner === 'home' ? 'away' : penWinner === 'away' ? 'home' : null,
       };
     });
 
-    hasLive = events.some(ev => ev.competitions?.[0]?.status?.type?.name === 'STATUS_IN_PROGRESS');
     lastFetch = new Date();
     return true;
   } catch(e) {
-    console.warn('ESPN fetch failed:', e.message);
+    console.warn('FIFA API error:', e.message);
     return false;
   }
 }
 
-// Fuzzy match team names
+// Busca el partido por nombre de equipo local — tolerante a variaciones
 function findMatch(homeTarget, awayTarget) {
-  const normalize = s => s.toLowerCase().replace(/[^a-z]/g,'');
-  const hn = normalize(homeTarget);
-  const an = awayTarget ? normalize(awayTarget) : null;
+  const hn = norm(homeTarget);
+  const an = awayTarget ? norm(awayTarget) : null;
 
-  for (const key of Object.keys(liveData)) {
-    const entry = liveData[key];
-    const eh = normalize(entry.homeName);
-    const ea = normalize(entry.awayName);
-    if (eh.includes(hn.slice(0,5)) || hn.includes(eh.slice(0,5))) {
-      if (!an || ea.includes(an.slice(0,4)) || an.includes(ea.slice(0,4))) {
-        return entry;
-      }
+  // Búsqueda exacta primero
+  if (teamIndex[hn]) {
+    const e = teamIndex[hn];
+    // Verificar que el away también coincide si lo tenemos
+    if (!an || norm(e.awayName).includes(an.slice(0,4)) || an.includes(norm(e.awayName).slice(0,4))) {
+      return e;
+    }
+  }
+
+  // Búsqueda parcial como fallback
+  for (const key of Object.keys(teamIndex)) {
+    if (key.includes(hn.slice(0,4)) || hn.includes(key.slice(0,4))) {
+      const e = teamIndex[key];
+      if (!an) return e;
+      const ea = norm(e.awayName);
+      if (ea.includes(an.slice(0,4)) || an.includes(ea.slice(0,4))) return e;
     }
   }
   return null;
@@ -632,7 +659,7 @@ function renderAll() {
     dot.className='live-dot'; st.textContent='EN VIVO';
   } else {
     dot.className='live-dot off';
-    st.textContent = lastFetch ? 'Actualizado ' + lastFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : 'Offline';
+    st.textContent = lastFetch ? 'FIFA · ' + lastFetch.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) : 'Conectando…';
   }
 
   // Leader
@@ -697,27 +724,20 @@ function renderAll() {
 //  INIT & AUTO-REFRESH
 // ═══════════════════════════════════════════════
 async function init() {
-  const ok = await fetchESPN();
+  const ok = await fetchFIFA();
   if (!ok) {
-    document.getElementById('main').innerHTML = `
-      <div class="api-error">
-        <p>No se pudo conectar con ESPN. Verifica tu conexión.</p>
-        <button onclick="init()">Reintentar</button>
-      </div>`;
-    // Still render with empty data
+    // Render igual aunque falle — mostrará resultados pendientes
     renderAll();
     return;
   }
   renderAll();
-  // Refresh every 60s (30s if live game)
+  // Refresh: 30s si hay partido vivo, 90s si no
   clearInterval(fetchInterval);
+  const delay = hasLive ? 30000 : 90000;
   fetchInterval = setInterval(async () => {
-    await fetchESPN();
+    await fetchFIFA();
     renderAll();
-    fetchInterval = setInterval(async () => {
-      await fetchESPN(); renderAll();
-    }, hasLive ? 30000 : 60000);
-  }, hasLive ? 30000 : 60000);
+  }, delay);
 }
 
 // Parallax
